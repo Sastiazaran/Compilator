@@ -5,37 +5,37 @@ public class Token {
     private int line;
 
     public Token (String word, String token, int line){
-
+        this.word = word;
+        this.token = token;
+        this.line = line;
     }
 
     public Token(String word, String token){
-
+        this.word = word;
+        this.token = token;
     }
 
     public String getWord(){
-
-        return "A";
+        return word;
     }
 
     public void setWord(String word){
-
+        this.word = word;
     }
     
     public String getToken(){
-
-        return "A";
+        return token;
     }
 
     public void setToken(String token){
-
+        this.token = token;
     }
 
     public int getLine(){
-
-        return 0;
+        return line;
     }
 
     public void setLine(int line){
-        
+        this.line = line;
     }
 }

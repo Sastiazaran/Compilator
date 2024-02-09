@@ -22,15 +22,15 @@ public class Lexer {
     private static final int CASH = 10;
     private static final int OTHER = 11;
     private static final int STOP = -2;
-    private static final int ERROR = -4;
-    private static final int DELIMITER = -4;
+    private static final int ERROR = 9;
+    private static final int DELIMITER = 12;
 
     //Table
 
     private static final int[][] stateTable = {
         {2,3,3,3,1,1,1,1,1,1,1,ERROR,STOP},
         {1,1,1,1,1,1,1,1,1,1,1,ERROR,STOP},
-        {4,4,4,ERROR,ERROR,5,ERROR,ERROR,7,ERROR,ERROR,ERROR,STOP},
+        {ERROR,4,4,ERROR,ERROR,5,ERROR,ERROR,7,ERROR,ERROR,ERROR,STOP},
         {3,3,3,3,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
         {4,4,4,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
         {6,6,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
@@ -79,13 +79,22 @@ public class Lexer {
             if( !isDelimiter(currentChar) && !isOperator(currentChar))
                 string = string + currentChar;
             index++;
-        }while (index < line.length() && state != STOP);
+        }while (index < line.length() && !isOperator(currentChar) && !isDelimiter(currentChar) && !isSpace(currentChar) && !isQuotationMark(currentChar));
+        //while (index < line.length() && state != STOP && !isSpace(currentChar));
 
         // Review Final State
 
-        if (state == 3) {
+        if (state == 6) {
             tokens.add(new Token(string, "BINARY", row));
-        } else {
+        } else if (state == 1){
+            tokens.add(new Token(string, "ID", row));
+        } else if (state == 3 || state == 2){
+            tokens.add(new Token(string, "Integer", row));
+        } else if (state == 4){
+            tokens.add(new Token(string, "Octal", row));
+        } else if (state == 8){
+            tokens.add(new Token(string, "Hexadecimal", row));
+        }  else {
             if(!string.equals(" "))
             tokens.add(new Token(string, "ERROR", row));
         }
@@ -96,6 +105,7 @@ public class Lexer {
         tokens.add(new Token(currentChar+"", "DELIMITER", row));
         else if (isOperator(currentChar))
         tokens.add(new Token(currentChar+"", "OPERATOR", row));
+        
         //loop
         if(index < line.length())
         splitLine(row, line.substring(index));
@@ -105,7 +115,8 @@ public class Lexer {
 
     private int calculateNextState(int state, char currentChar){
         if (isSpace(currentChar) || isDelimiter(currentChar) || isOperator(currentChar) || isQuotationMark(currentChar))
-            return stateTable[state][DELIMITER];
+            //return stateTable[state][DELIMITER];   
+            return state; 
         else if (currentChar == 'b' || currentChar == 'B')
             return stateTable[state][B];
         else if (currentChar == '0')
