@@ -1,3 +1,9 @@
+/**
+ * @author Sebastian Astiazaran
+ * @author Pablo Uscanga
+ * @author Rolando Palacios
+ */
+
 public class Token {
 
     private String word;

@@ -1,5 +1,11 @@
 import java.util.Vector;
 
+/**
+ * @author Sebastian Astiazaran
+ * @author Pablo Uscanga
+ * @author Rolando Palacios
+ */
+
 public class Lexer {
 
     private String text;
