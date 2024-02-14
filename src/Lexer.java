@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -10,9 +12,10 @@ public class Lexer {
 
     private String text;
     private Vector<Token> tokens;
-    private static final String[] KEYWORD = {"if","else",
+    private static final String[] KEYWORDS = {"if","else",
     "while", "switch", "case","return","int","float","void","char","string","boolean","true",
     "false","print"};
+    private static final List<String> KEYWORD = Arrays.asList(KEYWORDS);
     
     //CONSTANTS
     private static final int ZERO = 0;
@@ -21,29 +24,37 @@ public class Lexer {
     private static final int EIGHTNINE = 3;
     private static final int A = 4;
     private static final int B = 5;
-    private static final int CF = 6;
-    private static final int GW = 7;
-    private static final int X = 8;
-    private static final int YZ = 9;
-    private static final int CASH = 10;
-    private static final int OTHER = 11;
+    private static final int CD = 6;
+    private static final int E = 7;
+    private static final int F = 8;
+    private static final int GW = 9;
+    private static final int X = 10;
+    private static final int YZ = 11;
+    private static final int CASH = 12;
+    private static final int DOT = 13;
+    private static final int OTHER = 14;
     private static final int STOP = -2;
-    private static final int ERROR = 9;
-    private static final int DELIMITER = 12;
+    private static final int ERROR = 11;
+    private static final int DELIMITER = 20;
 
     //Table
 
     private static final int[][] stateTable = {
-        {2,3,3,3,1,1,1,1,1,1,1,ERROR,STOP},
-        {1,1,1,1,1,1,1,1,1,1,1,ERROR,STOP},
-        {ERROR,4,4,ERROR,ERROR,5,ERROR,ERROR,7,ERROR,ERROR,ERROR,STOP},
-        {3,3,3,3,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {4,4,4,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {6,6,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {6,6,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {8,8,8,8,8,8,8,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {8,8,8,8,8,8,8,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
-        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}
+        {2,3,3,3,1,1,1,1,1,1,1,1,1,10,ERROR,STOP},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,ERROR,ERROR,STOP},
+        {ERROR,4,4,ERROR,ERROR,5,ERROR,12,14,ERROR,7,ERROR,ERROR,10,ERROR,STOP},
+        {3,3,3,3,ERROR,ERROR,ERROR,12,14,ERROR,ERROR,ERROR,ERROR,10,ERROR,STOP},
+        {4,4,4,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {6,6,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {6,6,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {8,8,8,8,8,8,8,8,8,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {8,8,8,8,8,8,8,8,8,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},
+        {11,11,11,11,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //dot
+        {11,11,11,11,ERROR,ERROR,ERROR,12,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //FloatDot
+        {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //exp
+        {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //float exp
+        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}  //f float
     };
 
     //Constructor
@@ -93,13 +104,19 @@ public class Lexer {
         if (state == 6) {
             tokens.add(new Token(string, "BINARY", row));
         } else if (state == 1){
-            tokens.add(new Token(string, "ID", row));
+            if(KEYWORD.contains(string)) {
+                tokens.add(new Token(string, "KEYWORD", row));
+            } else {
+                tokens.add(new Token(string, "ID", row));
+            }
         } else if (state == 3 || state == 2){
             tokens.add(new Token(string, "Integer", row));
         } else if (state == 4){
             tokens.add(new Token(string, "Octal", row));
         } else if (state == 8){
             tokens.add(new Token(string, "Hexadecimal", row));
+        } else if (state == 14 || state == 13 ||state == 11){
+            tokens.add(new Token(string, "Float", row));
         }  else {
             if(!string.equals(" "))
             tokens.add(new Token(string, "ERROR", row));
@@ -137,8 +154,12 @@ public class Lexer {
             return stateTable[state][A];
         else if (currentChar == 'B' || currentChar == 'b')
             return stateTable[state][B];
-        else if (currentChar == 'C' || currentChar == 'D' || currentChar == 'E' || currentChar == 'F' || currentChar == 'c' || currentChar == 'd' || currentChar == 'e' || currentChar == 'f')
-            return stateTable[state][CF];
+        else if (currentChar == 'C' || currentChar == 'D' || currentChar == 'c' || currentChar == 'd')
+            return stateTable[state][CD];
+        else if (currentChar == 'E' || currentChar == 'e')
+            return stateTable[state][E];
+        else if (currentChar == 'F' || currentChar == 'f')
+            return stateTable[state][F];
         else if (currentChar == 'G' || currentChar == 'H' || currentChar == 'I' || currentChar == 'J' || currentChar == 'K' || currentChar == 'L' || currentChar == 'M'
         || currentChar == 'N' || currentChar == 'P' || currentChar == 'Q' || currentChar == 'R' || currentChar == 'S' || currentChar == 'T' || currentChar == 'O'
         || currentChar == 'V' || currentChar == 'U' || currentChar == 'W' || currentChar == 'g' || currentChar == 'h' || currentChar == 'i' || currentChar == 'j' || currentChar == 'k' || currentChar == 'l' 
