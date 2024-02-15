@@ -54,7 +54,8 @@ public class Lexer {
         {11,11,11,11,ERROR,ERROR,ERROR,12,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //dot float
         {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //exp
         {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //exp float
-        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}  //f float
+        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},  //f float
+        {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP} //sign exp
     };
 
     //Constructor
@@ -93,10 +94,10 @@ public class Lexer {
         do{
             currentChar = line.charAt(index);
             state = calculateNextState(state, currentChar);
-            if( !isDelimiter(currentChar) && !isOperator(currentChar))
+            if( !isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15))
                 string = string + currentChar;
             index++;
-        }while (index < line.length() && !isOperator(currentChar) && !isDelimiter(currentChar) && !isSpace(currentChar) && !isQuotationMark(currentChar));
+        }while (index < line.length() && (!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && !isSpace(currentChar) && !isQuotationMark(currentChar));
         //while (index < line.length() && state != STOP && !isSpace(currentChar));
 
         // Review Final State
@@ -138,8 +139,11 @@ public class Lexer {
 
     private int calculateNextState(int state, char currentChar){
         if (isSpace(currentChar) || isDelimiter(currentChar) || isOperator(currentChar) || isQuotationMark(currentChar))
-            //return stateTable[state][DELIMITER];   
-            return state; 
+            //return stateTable[state][DELIMITER];
+            if(currentChar == '-' && state == 12)
+                return 15;
+            else
+                return state;
         else if (currentChar == 'b' || currentChar == 'B')
             return stateTable[state][B];
         else if (currentChar == '0')
