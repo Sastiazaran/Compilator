@@ -97,10 +97,10 @@ public class Lexer {
         do{
             currentChar = line.charAt(index);
             state = calculateNextState(state, currentChar);
-            if( !isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15))
+            if( !isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15 || state == 16 || state == 17))
                 string = string + currentChar;
             index++;
-        }while (index < line.length() && ((!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && !isSpace(currentChar) || state == 17) && (!isQuotationMark(currentChar) || state == 16));
+        }while (index < line.length() && (((!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && (!isSpace(currentChar))) || state == 16 || state == 17) && (!isQuotationMark(currentChar) || state == 16));
         //while (index < line.length() && state != STOP && !isSpace(currentChar));
 
         // Review Final State
@@ -122,7 +122,7 @@ public class Lexer {
         } else if (state == 14 || state == 13 ||state == 11) {
             tokens.add(new Token(string, "Float", row));
         } else if (state == 18) {
-            tokens.add(new Token(string, "String", row));
+            tokens.add(new Token(string, "String", row)); //Breaks when space is after "
         }  else {
             if(!string.equals(" "))
             tokens.add(new Token(string, "ERROR", row));
@@ -151,6 +151,8 @@ public class Lexer {
                 return 16;
             else if(currentChar == '"' && state == 17)
                 return 18;
+            else if (state == 16 || state == 17)
+                return 17;
             else
                 return state;
         else if (currentChar == 'b' || currentChar == 'B')
