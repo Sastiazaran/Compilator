@@ -7,7 +7,7 @@ import java.util.Vector;
 
 class GUI extends JFrame {
 
-    private JTextField wordField;
+    private JTextArea wordArea; // Cambiado de JTextField a JTextArea
     private JButton processButton;
     private JTable tokensTable;
     private DefaultTableModel tableModel;
@@ -21,7 +21,7 @@ class GUI extends JFrame {
         setLocationRelativeTo(null);
 
         // Crear componentes
-        wordField = new JTextField(60);
+        wordArea = new JTextArea(10, 60); // Ajusta el número de filas según tus necesidades
         processButton = new JButton("Process");
         tableModel = new DefaultTableModel();
         tokensTable = new JTable(tableModel);
@@ -34,12 +34,12 @@ class GUI extends JFrame {
 
         // Configurar el diseño de la interfaz
         setLayout(new BorderLayout());
-        
+
         // Agregar JScrollPane a inputPanel
         JScrollPane inputScrollPane = new JScrollPane();
         JPanel inputPanel = new JPanel();
-        inputPanel.add(new JLabel("Word: "));
-        inputPanel.add(wordField);
+        inputPanel.add(new JLabel("Words: ")); // Cambiado de "Word" a "Words"
+        inputPanel.add(wordArea);
         inputPanel.add(processButton);
         inputScrollPane.setViewportView(inputPanel);
         add(inputScrollPane, BorderLayout.NORTH);
@@ -62,7 +62,7 @@ class GUI extends JFrame {
     }
 
     private void processInput() {
-        String words = wordField.getText();
+        String words = wordArea.getText(); // Cambiado de getText() a getText()
         Lexer lex = new Lexer(words);
         lex.run();
         Vector<Token> tokens = lex.getTokens();
@@ -87,4 +87,11 @@ class GUI extends JFrame {
         consoleTextArea.append("----------------------------\n");
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new GUI().setVisible(true);
+            }
+        });
+    }
 }
