@@ -55,7 +55,10 @@ public class Lexer {
         {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //exp
         {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //exp float
         {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP},  //f float
-        {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP} //sign exp
+        {13,13,13,13,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP}, //sign exp
+        {17,17,17,17,17,17,17,17,17,17,17,17,17,17,STOP}, //first"
+        {17,17,17,17,17,17,17,17,17,17,17,17,17,17,STOP}, //TextString
+        {ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,STOP} //String
     };
 
     //Constructor
@@ -97,7 +100,7 @@ public class Lexer {
             if( !isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15))
                 string = string + currentChar;
             index++;
-        }while (index < line.length() && (!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && !isSpace(currentChar) && !isQuotationMark(currentChar));
+        }while (index < line.length() && ((!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && !isSpace(currentChar) || state == 17) && (!isQuotationMark(currentChar) || state == 16));
         //while (index < line.length() && state != STOP && !isSpace(currentChar));
 
         // Review Final State
@@ -116,8 +119,10 @@ public class Lexer {
             tokens.add(new Token(string, "Octal", row));
         } else if (state == 8){
             tokens.add(new Token(string, "Hexadecimal", row));
-        } else if (state == 14 || state == 13 ||state == 11){
+        } else if (state == 14 || state == 13 ||state == 11) {
             tokens.add(new Token(string, "Float", row));
+        } else if (state == 18) {
+            tokens.add(new Token(string, "String", row));
         }  else {
             if(!string.equals(" "))
             tokens.add(new Token(string, "ERROR", row));
@@ -142,6 +147,10 @@ public class Lexer {
             //return stateTable[state][DELIMITER];
             if(currentChar == '-' && state == 12)
                 return 15;
+            else if(currentChar == '"' && state == 0)
+                return 16;
+            else if(currentChar == '"' && state == 17)
+                return 18;
             else
                 return state;
         else if (currentChar == 'b' || currentChar == 'B')
