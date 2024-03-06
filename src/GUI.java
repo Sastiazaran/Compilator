@@ -66,6 +66,7 @@ class GUI extends JFrame {
         Lexer lex = new Lexer(words);
         lex.run();
         Vector<Token> tokens = lex.getTokens();
+        //Parser pars = new Parser(tokens);
 
         // Limpiar la tabla antes de agregar nuevas filas
         tableModel.setRowCount(0);

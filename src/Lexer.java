@@ -122,7 +122,7 @@ public class Lexer {
         } else if (state == 14 || state == 13 ||state == 11) {
             tokens.add(new Token(string, "Float", row));
         } else if (state == 18) {
-            tokens.add(new Token(string, "String", row)); //Breaks when space is after "
+            tokens.add(new Token(string, "String", row));
         }  else {
             if(!string.equals(" "))
             tokens.add(new Token(string, "ERROR", row));
