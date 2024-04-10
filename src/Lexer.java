@@ -124,20 +124,21 @@ public class Lexer {
         } else if (state == 18) {
             tokens.add(new Token(string, "String", row));
         }  else {
-            if(!string.equals(" "))
-            tokens.add(new Token(string, "ERROR", row));
+            if(!string.equals(" ") && !string.equals(""))
+                tokens.add(new Token(string, "ERROR", row));
         }
 
         //Current char
 
         if(isDelimiter(currentChar))
-        tokens.add(new Token(currentChar+"", "DELIMITER", row));
+            tokens.add(new Token(""+currentChar+"", "DELIMITER", row));
         else if (isOperator(currentChar))
-        tokens.add(new Token(currentChar+"", "OPERATOR", row));
-        
+            tokens.add(new Token(""+currentChar+"", "OPERATOR", row));
+
         //loop
         if(index < line.length())
-        splitLine(row, line.substring(index));
+            splitLine(row, line.substring(index));
+
     }
 
     //calculate state

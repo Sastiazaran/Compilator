@@ -27,19 +27,26 @@ public class Parser {
     }
     public static void RULE_BODY() {
         while (!tokens.get(currentToken).getWord().equals("}")) {
-            RULE_EXPRESSION();
+            /*RULE_EXPRESSION();
 
             if (tokens.get(currentToken).getWord().equals(";")) {
                 currentToken++;
             } else {
                 error();
-            }
-            /*if (tokens.get(currentToken).getWord().equals(";")) {
-                currentToken++;
+            }*/
+            if (tokens.get(currentToken).getToken().equals("ID")) {
+                RULE_ASSIGNMENT();
+                if (tokens.get(currentToken).getWord().equals(";")){
+                    currentToken++;
+                } else {
+                    System.out.println("Error 3"); //Add error to console
+                }
             } else if (tokens.get(currentToken).getToken().equals("Integer") | tokens.get(currentToken).getToken().equals("Float") | tokens.get(currentToken).getToken().equals("Octal") | tokens.get(currentToken).getToken().equals("Hexadecimal")) {
                 RULE_VARIABLE();
                 if (tokens.get(currentToken).getWord().equals(";")) {
                     currentToken++;
+                } else {
+                    System.out.println("Error 3"); //Add error to console
                 }
             } else if (tokens.get(currentToken).getWord().equals("while")) {
                 RULE_WHILE();
@@ -49,10 +56,27 @@ public class Parser {
                 RULE_RETURN();
                 if (tokens.get(currentToken).getWord().equals(";")) {
                     currentToken++;
+                } else {
+                    System.out.println("Error 3"); //Add error to console
                 }
-            }*/
-
+            } else {
+                System.out.println("Error 4"); //Add error to console
+            }
         }
+    }
+
+    public static void RULE_ASSIGNMENT() {
+        if (tokens.get(currentToken).getToken().equals("ID")) {
+            currentToken++;
+        } else {
+            System.out.println("Error 3"); //Add error to console
+        }
+        if (tokens.get(currentToken).getWord().equals("=")) {
+            currentToken++;
+        } else {
+            System.out.println("Error 3"); //Add error to console
+        }
+        RULE_EXPRESSION();
     }
 
     public static void RULE_EXPRESSION() {
@@ -151,9 +175,96 @@ public class Parser {
     public static void RULE_VARIABLE() {
         if (tokens.get(currentToken).getWord().equals("int") | tokens.get(currentToken).getWord().equals("float") | tokens.get(currentToken).getWord().equals("boolean") | tokens.get(currentToken).getWord().equals("string") | tokens.get(currentToken).getWord().equals("void")) {
             currentToken++;
+        } else {
+            System.out.println("Error 3"); //Add error to console
         }
         if (tokens.get(currentToken).getToken().equals("ID")) {
             currentToken++;
+        } else {
+            System.out.println("Error 3"); //Add error to console
+        }
+    }
+
+    public static void RULE_WHILE() {
+        if (tokens.get(currentToken).getWord().equals("while")) {
+            currentToken++;
+        } else {
+            error();
+        }
+        if (tokens.get(currentToken).getWord().equals("(")) {
+            currentToken++;
+        } else {
+            error();
+        }
+
+        RULE_EXPRESSION();
+
+        if (tokens.get(currentToken).getWord().equals(")")) {
+            currentToken++;
+        } else {
+            error();
+        }
+
+        RULE_PROGRAM();
+
+    }
+
+    public static void RULE_IF() {
+        if (tokens.get(currentToken).getWord().equals("if")) {
+            currentToken++;
+        } else {
+            error();
+        }
+        if (tokens.get(currentToken).getWord().equals("(")) {
+            currentToken++;
+        } else {
+            error();
+        }
+
+        RULE_EXPRESSION();
+
+        if (tokens.get(currentToken).getWord().equals(")")) {
+            currentToken++;
+        } else {
+            error();
+        }
+
+        RULE_PROGRAM();
+
+        if(tokens.get(currentToken).getWord().equals("else")) {
+            currentToken++;
+
+            RULE_PROGRAM();
+
+        }
+    }
+
+    public static void RULE_RETURN() {
+        if (tokens.get(currentToken).getWord().equals("return")) {
+            currentToken++;
+        } else {
+            System.out.println("Error 3"); //Add error to console
+        }
+    }
+
+    public static void RULE_PRINT() {
+        if (tokens.get(currentToken).getWord().equals("print")) {
+            currentToken++;
+        } else {
+            error();
+        }
+        if (tokens.get(currentToken).getWord().equals("(")) {
+            currentToken++;
+        } else {
+            error();
+        }
+
+        RULE_EXPRESSION();
+
+        if (tokens.get(currentToken).getWord().equals(")")) {
+            currentToken++;
+        } else {
+            error();
         }
     }
 
