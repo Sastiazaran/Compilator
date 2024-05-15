@@ -71,18 +71,27 @@ public class Lexer {
         tokens = new Vector<Token>();
         String line;
         int counterOfLines = 1;
-        do{
-            int eolAt = text.indexOf(System.lineSeparator());
-            if (eolAt >= 0){
+        while (!text.isEmpty()) {
+            int eolAt = findNextLineSeparator();
+            if (eolAt >= 0) {
                 line = text.substring(0, eolAt);
-                if(text.length()>0) text = text.substring(eolAt + 1);
-            }else {
+                text = text.substring(eolAt + 1);
+            } else {
                 line = text;
                 text = "";
             }
             splitLine(counterOfLines, line);
             counterOfLines++;
-        }while(!text.equals(""));
+        }
+    }
+
+    private int findNextLineSeparator() {
+        int index = text.indexOf("\n");
+        int carriageReturnIndex = text.indexOf("\r\n");
+        if (index < 0 || (carriageReturnIndex >= 0 && carriageReturnIndex < index)) {
+            return carriageReturnIndex;
+        }
+        return index;
     }
 
     private void splitLine(int row, String line) {
@@ -90,18 +99,17 @@ public class Lexer {
         int index = 0;
         char currentChar;
         String string = "";
-        if(line.equals("")) return;
+        if (line.isEmpty()) return;
 
         //DFA
 
-        do{
+        do {
             currentChar = line.charAt(index);
             state = calculateNextState(state, currentChar);
-            if( !isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15 || state == 16 || state == 17))
-                string = string + currentChar;
+            if (!isDelimiter(currentChar) && (!isOperator(currentChar) || state == 15 || state == 16 || state == 17) && (!isSpace(currentChar)))
+                string += currentChar;
             index++;
-        }while (index < line.length() && (((!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && (!isSpace(currentChar))) || state == 16 || state == 17) && (!isQuotationMark(currentChar) || state == 16));
-        //while (index < line.length() && state != STOP && !isSpace(currentChar));
+        } while (index < line.length() && (((!isOperator(currentChar) || state == 15) && !isDelimiter(currentChar) && (!isSpace(currentChar))) || state == 16 || state == 17) && (!isQuotationMark(currentChar) || state == 16));
 
         // Review Final State
 
@@ -144,7 +152,7 @@ public class Lexer {
     //calculate state
 
     private int calculateNextState(int state, char currentChar){
-        if (isSpace(currentChar) || isDelimiter(currentChar) || isOperator(currentChar) || isQuotationMark(currentChar))
+        if (isSpace(currentChar) || isDelimiter(currentChar) || isOperator(currentChar) || isQuotationMark(currentChar) || isEnter(currentChar))
             //return stateTable[state][DELIMITER];
             if(currentChar == '-' && state == 12)
                 return 15;
@@ -225,6 +233,12 @@ public class Lexer {
 
     private boolean isSpace(char o){
         return o == ' ';
+    }
+
+    //Enter
+
+    private boolean isEnter(char o){
+        return o == '\n';
     }
     
     // get Tokens
