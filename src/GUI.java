@@ -2,9 +2,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
-
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.Vector;
 
@@ -46,6 +45,9 @@ class GUI extends JFrame {
     private JTable tokensTable;
     private DefaultTableModel tableModel;
     private JTextArea consoleTextArea;
+    private JTree parserTree;
+    private DefaultTreeModel treeModel;
+    private DefaultMutableTreeNode rootNode;
 
     public GUI() {
         // Configuración de la ventana principal
@@ -82,6 +84,7 @@ class GUI extends JFrame {
         JPanel tablePanel = new JPanel();
         JPanel consolePanel = new JPanel();
         JPanel parserPanel = new JPanel(); // Nuevo panel para la pestaña "Parser"
+        JPanel treePanel = new JPanel();
 
         // Configurar tablePanel
         tablePanel.setLayout(new BorderLayout());
@@ -97,11 +100,20 @@ class GUI extends JFrame {
         JTextArea parserTextArea = new JTextArea(10, 30);
         parserPanel.add(new JScrollPane(parserTextArea), BorderLayout.CENTER);
 
+        // Configurar treePanel
+        treePanel.setLayout(new BorderLayout());
+        treePanel.add(new JLabel("Tree:"), BorderLayout.NORTH);
+        rootNode = new DefaultMutableTreeNode("root");
+        treeModel = new DefaultTreeModel(rootNode);
+        parserTree = new JTree(treeModel);
+        treePanel.add(new JScrollPane(parserTree), BorderLayout.CENTER);
+
         // Crear JTabbedPane y agregar los paneles
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Lexer", tablePanel);
         tabbedPane.addTab("Console", consolePanel);
-        tabbedPane.addTab("Parser", parserPanel); // Agregar la pestaña "Parser"
+        tabbedPane.addTab("Parser", parserPanel);
+        tabbedPane.addTab("Tree", treePanel);
 
         // Crear el panel principal y agregar componentes
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -142,16 +154,16 @@ class GUI extends JFrame {
 
         Parser parser = new Parser(tokens);
         DefaultMutableTreeNode rootNode = parser.parse();
-        JTree tree = new JTree(rootNode);
+        treeModel.setRoot(rootNode);
+        treeModel.reload();
 
         ErrorController errorController = Parser.errorController;
 
-        for (String error : errorController.getErrors()){
-            consoleOutput.append(error + "");
+        for (String error : errorController.getErrors()) {
+            consoleOutput.append(error).append("\n");
         }
 
         consoleOutput.append("----------------------------\n");
-
         consoleTextArea.append(consoleOutput.toString());
 
         // Simular procesamiento del parser (puedes reemplazar esto con la lógica real de tu parser)
@@ -161,8 +173,6 @@ class GUI extends JFrame {
             parserOutput.append("Processed token: ").append(token.getWord()).append("\n");
         }
         parserTextArea.setText(parserOutput.toString());
-
-        
     }
 
     public static void main(String[] args) {
