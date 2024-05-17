@@ -3,6 +3,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Element;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import java.awt.*;
 import java.util.Vector;
 
@@ -139,14 +141,14 @@ class GUI extends JFrame {
         }
 
         Parser parser = new Parser(tokens);
+        DefaultMutableTreeNode rootNode = parser.parse();
+        JTree tree = new JTree(rootNode);
 
         ErrorController errorController = Parser.errorController;
 
         for (String error : errorController.getErrors()){
             consoleOutput.append(error + "");
         }
-
-        consoleOutput.append("---------------");
 
         consoleOutput.append("----------------------------\n");
 

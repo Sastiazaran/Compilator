@@ -1,16 +1,24 @@
 import java.util.Vector;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.*;
 
 public class Parser {
 
     private static Vector<Token> tokens;
-    private static int currentToken;
     public static ErrorController errorController = new ErrorController("PARSER");
+    private static int currentToken = 0;
+    private static DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+    private static DefaultMutableTreeNode current_level = root;
 
     public Parser(Vector<Token> tokens) {
         this.tokens = tokens;
         RULE_PROGRAM();
     }
 
+    //print())
+    
+    
     private static void error1(int type) {
         if (isCurrentTokenValid()) {
             String msg = "\nError msg: Line: " + (tokens.get(currentToken).getLine() - 1) + ": expected";
@@ -60,11 +68,36 @@ public class Parser {
         }
     }
 
+    
+    //run
+    public DefaultMutableTreeNode parse(){
+        currentToken = 0;
+        clearTree(root);
+        current_level = root;
+        RULE_PROGRAM();
+
+        return root;   
+    }
+
+    private static void clearTree(DefaultMutableTreeNode node){
+        node.removeAllChildren();;
+    }
+
+    private static void addNote(String name){
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        current_level.add(newNode);
+        current_level = newNode;
+    }
+    
+
     private static boolean isCurrentTokenValid() {
         return currentToken >= 0 && currentToken < tokens.size();
     }
 
     public static void RULE_PROGRAM() {
+        //NODE
+        addNote("pabuaghmandou");
+
         if (tokens.get(currentToken).getWord().equals("{")) {
             currentToken++;
         } else {
@@ -79,6 +112,8 @@ public class Parser {
             error();
         }
     }
+
+    
 
     public static void RULE_BODY() {
         while (!tokens.get(currentToken).getWord().equals("}")) {
