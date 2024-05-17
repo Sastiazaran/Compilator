@@ -68,7 +68,7 @@ public class Parser {
         }
     }
 
-    
+
     //run
     public DefaultMutableTreeNode parse(){
         currentToken = 0;
@@ -76,7 +76,7 @@ public class Parser {
         current_level = root;
         RULE_PROGRAM();
 
-        return root;   
+        return root;
     }
 
     private static void clearTree(DefaultMutableTreeNode node){
@@ -87,15 +87,6 @@ public class Parser {
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
         current_level.add(newNode);
         current_level = newNode;
-    }
-
-    private static void addNote(String name, boolean changeLevel){
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-        current_level.add(newNode);
-        if(changeLevel){
-            current_level = newNode;
-        }
-        
     }
     
 
@@ -142,7 +133,7 @@ public class Parser {
         }
     }
 
-    
+
 
     public static void RULE_BODY() {
         //Añade body al árbol
