@@ -80,13 +80,22 @@ public class Parser {
     }
 
     private static void clearTree(DefaultMutableTreeNode node){
-        node.removeAllChildren();;
+        node.removeAllChildren();
     }
 
     private static void addNote(String name){
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
         current_level.add(newNode);
         current_level = newNode;
+    }
+
+    private static void addNote(String name, boolean changeLevel){
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        current_level.add(newNode);
+        if(changeLevel){
+            current_level = newNode;
+        }
+        
     }
     
 
