@@ -1,3 +1,5 @@
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -231,17 +233,71 @@ public class Parser {
     public static void RULE_EXPRESSION() {
         //Añade expression al árbol
         addNote("RULE_EXPRESSION");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        RULE_X();
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
 
-        while (tokens.get(currentToken).getWord().equals("|") && isCurrentTokenValid()) {
-            //Añade current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
-            RULE_X();
+        boolean sets = true;
+        for (String set: first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
+
+        if (!sets) {
+            RULE_X();
+
+            while (tokens.get(currentToken).getWord().equals("|") && isCurrentTokenValid()) {
+                //Añade current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_X();
+            }
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -249,34 +305,145 @@ public class Parser {
     public static void RULE_X() {
         //Añade X al árbol
         addNote("RULE_X");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        RULE_Y();
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
 
-        while (tokens.get(currentToken).getWord().equals("&") && isCurrentTokenValid()) {
-            //Añade current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
-            RULE_Y();
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
+
+        if (!sets) {
+            RULE_Y();
+
+            while (tokens.get(currentToken).getWord().equals("&") && isCurrentTokenValid()) {
+                //Añade current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_Y();
+            }
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
 
     public static void RULE_Y() {
-        //A{ade Y al árbol
+        //Añade Y al árbol
         addNote("RULE_Y");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        if (tokens.get(currentToken).getWord().equals("!") && isCurrentTokenValid()) {
-            //Añade current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
+
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
 
-        RULE_R();
+        if (!sets){
+            if (tokens.get(currentToken).getWord().equals("!") && isCurrentTokenValid()) {
+                //Añade current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+            }
+
+            RULE_R();
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
 
@@ -285,19 +452,75 @@ public class Parser {
     public static void RULE_R() {
         //Añade R al árbol
         addNote("RULE_R");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        RULE_E();
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
 
-        while (tokens.get(currentToken).getWord().equals("<") | tokens.get(currentToken).getWord().equals(">")
-                | tokens.get(currentToken).getWord().equals("==") | tokens.get(currentToken).getWord().equals("!=")
-                | tokens.get(currentToken).getWord().equals("<=") | tokens.get(currentToken).getWord().equals(">=")) {
-            //Añade current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
-            RULE_E();
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
+
+        if (!sets) {
+            RULE_E();
+
+            while (tokens.get(currentToken).getWord().equals("<") | tokens.get(currentToken).getWord().equals(">")
+                    | tokens.get(currentToken).getWord().equals("==") | tokens.get(currentToken).getWord().equals("!=")
+                    | tokens.get(currentToken).getWord().equals("<=") | tokens.get(currentToken).getWord().equals(">=")) {
+                //Añade current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_E();
+            }
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -305,18 +528,77 @@ public class Parser {
     public static void RULE_E() {
         //Añade E al árbol
         addNote("RULE_E");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
+        follow.add(">");
+        follow.add("<");
+        follow.add("!=");
+        follow.add("==");
 
-        RULE_A();
-
-        while ((tokens.get(currentToken).getWord().equals("-") | tokens.get(currentToken).getWord().equals("+")) && isCurrentTokenValid()) {
-            //Añadir current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
-            RULE_A();
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
+
+        if (!sets) {
+            RULE_A();
+
+            while ((tokens.get(currentToken).getWord().equals("-") | tokens.get(currentToken).getWord().equals("+")) && isCurrentTokenValid()) {
+                //Añadir current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_A();
+            }
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -324,17 +606,79 @@ public class Parser {
     public static void RULE_A() {
         //Añade A al árbol
         addNote("RULE_A");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        RULE_B();
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
+        follow.add(">");
+        follow.add("<");
+        follow.add("!=");
+        follow.add("==");
+        follow.add("+");
+        follow.add("-");
 
-        while ((tokens.get(currentToken).getWord().equals("/") | tokens.get(currentToken).getWord().equals("*")) && isCurrentTokenValid()) {
-            //Añade current token al árbol
-            addNote(tokens.get(currentToken).getWord(), false);
-            currentToken++;
-            RULE_B();
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                break;
+            }
         }
+
+        if (!sets) {
+            RULE_B();
+
+            while ((tokens.get(currentToken).getWord().equals("/") | tokens.get(currentToken).getWord().equals("*")) && isCurrentTokenValid()) {
+                //Añade current token al árbol
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_B();
+            }
+        }
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -342,16 +686,82 @@ public class Parser {
     public static void RULE_B() {
         //A{ade B al árbol
         addNote("RULE_B");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        if (tokens.get(currentToken).getWord().equals("-") && isCurrentTokenValid()) {
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
+        follow.add(">");
+        follow.add("<");
+        follow.add("!=");
+        follow.add("==");
+        follow.add("+");
+        follow.add("-");
+        follow.add("*");
+        follow.add("/");
+
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                sets = false;
+                if (tokens.get(currentToken).getWord().equals("-") && isCurrentTokenValid()) {
+                    //Añade - al árbol
+                    addNote(tokens.get(currentToken).getWord(), false);
+                    currentToken++;
+                }
+            }
+        }
+
+        /*if (tokens.get(currentToken).getWord().equals("-") && isCurrentTokenValid()) {
             //Añade - al árbol
             addNote(tokens.get(currentToken).getWord(), false);
             currentToken++;
-        }
+        }*/
 
         RULE_C();
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
+        }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -359,10 +769,50 @@ public class Parser {
     public static void RULE_C() {
         //Añade C al árbol
         addNote("RULE_C");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        if (isVarKey(tokens.get(currentToken).getToken()) && isCurrentTokenValid()) {
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("!");
+        first.add("-");
+        first.add("Integer");
+        first.add("Octal");
+        first.add("Hexadecimal");
+        first.add("Float");
+        first.add("String");
+        first.add("BINARY");
+        first.add("ID");
+        first.add("true");
+        first.add("false");
+        first.add("(");
+        follow.add(")");
+        follow.add(";");
+        follow.add("|");
+        follow.add("&");
+        follow.add(">");
+        follow.add("<");
+        follow.add("!=");
+        follow.add("==");
+        follow.add("+");
+        follow.add("-");
+
+        boolean sets = true;
+        for (String set : first) {
+            if (set.equals(tokens.get(currentToken).getWord()) | set.equals(tokens.get(currentToken).getToken())) {
+                addNote(tokens.get(currentToken).getToken(), false);
+                sets = false;
+                break;
+            }
+            if (tokens.get(currentToken).getWord().equals("(") | isCurrentTokenValid()) {
+                currentToken++;
+                RULE_EXPRESSION();
+            }
+        }
+
+
+
+        /*if (isVarKey(tokens.get(currentToken).getToken()) && isCurrentTokenValid()) {
             //Añadir current token al árbol
             addNote(tokens.get(currentToken).getWord(), false);
             currentToken++;
@@ -389,7 +839,34 @@ public class Parser {
         } else {
             error(5);
             currentToken++;
+        }*/
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
         }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -397,10 +874,26 @@ public class Parser {
     public static void RULE_VARIABLE() {
         //Añade Variable al árbol
         addNote("RULE_VARIABLE");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
 
-        if ((isVariable(tokens.get(currentToken).getWord()) && tokens.get(currentToken).getToken().equals("KEYWORD")) && isCurrentTokenValid()) {
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        Set<String> follow = new HashSet<>();
+        first.add("int");
+        first.add("float");
+        first.add("string");
+        first.add("boolean");
+        follow.add(";");
+
+        boolean sets = true;
+
+        if (isCurrentTokenValid() && tokens.get(currentToken).getWord().equals("=")) {
+            addNote(tokens.get(currentToken).getWord(),false);
+            currentToken++;
+            RULE_EXPRESSION();
+        }
+
+        /*if ((isVariable(tokens.get(currentToken).getWord()) && tokens.get(currentToken).getToken().equals("KEYWORD")) && isCurrentTokenValid()) {
             //Añade current token al árbol
             addNote(tokens.get(currentToken).getWord(), false);
             currentToken++;
@@ -417,7 +910,34 @@ public class Parser {
                 currentToken++;
                 RULE_EXPRESSION();
             }
+        }*/
+
+        if (sets) {
+            error(5);
+            while (sets) {
+                for (String set : follow) {
+                    if (set.equals(tokens.get(currentToken).getWord())) {
+                        sets = false;
+                        break;
+                    }
+                }
+                if (sets) {
+                    currentToken++;
+                }
+            }
+        } else {
+            sets = true;
+            for (String set : follow) {
+                if (set.equals(tokens.get(currentToken).getWord())) {
+                    sets = false;
+                    break;
+                }
+            }
         }
+        if (sets) {
+            error(3);
+        }
+
         //Devuelve nivel al árbol
         current_level = current_level_at_tree;
     }
@@ -425,8 +945,11 @@ public class Parser {
     public static void RULE_WHILE() {
         //Añade While al árbol
         addNote("RULE_WHILE");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
+
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        first.add("while");
 
         if (tokens.get(currentToken).getWord().equals("while") && isCurrentTokenValid()) {
             //Añade while al árbol
@@ -450,6 +973,7 @@ public class Parser {
                 error(9);
             }
         }
+
         //Devuelve nivel al padre
         current_level = current_level_at_tree;
     }
@@ -457,8 +981,11 @@ public class Parser {
     public static void RULE_IF() {
         //Añade IF al árbol
         addNote("RULE_IF");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
+
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        first.add("if");
 
         if (tokens.get(currentToken).getWord().equals("if") && isCurrentTokenValid()) {
             //Añade if al árbol
@@ -494,8 +1021,11 @@ public class Parser {
     public static void RULE_RETURN() {
         //Añade Return al árbol
         addNote("RULE_RETURN");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
+
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        first.add("return");
 
         if (tokens.get(currentToken).getWord().equals("return") && isCurrentTokenValid()) {
             //Añade return al árbol
@@ -510,8 +1040,11 @@ public class Parser {
     public static void RULE_PRINT() {
         //Añade Print al árbol
         addNote("RULE_PRINT");
-
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
+
+        //FIRST y FOLLOW
+        Set<String> first = new HashSet<>();
+        first.add("print");
 
         if (tokens.get(currentToken).getWord().equals("print") && isCurrentTokenValid()) {
             //Añade print al árbol
