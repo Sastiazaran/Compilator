@@ -830,7 +830,11 @@ public class Parser {
             } else {
                 error(8);
             }
-//            RULE_EXPRESSION();
+            if (isCurrentTokenValid() && isSameLine() && tokens.get(currentToken).getWord().equals("=")) {
+                addNote(tokens.get(currentToken).getWord(), false);
+                currentToken++;
+                RULE_EXPRESSION();
+            }
         }
 //        if (isCurrentTokenValid() && tokens.get(currentToken).getWord().equals("=")) {
 //        }
