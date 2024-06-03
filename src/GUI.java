@@ -152,12 +152,16 @@ class GUI extends JFrame {
             consoleOutput.append(token.getLine()).append(" ").append(token.getToken()).append(" ").append(token.getWord()).append("\n");
         }
 
+        // Parsing
         Parser parser = new Parser(tokens);
         DefaultMutableTreeNode rootNode = parser.parse();
         treeModel.setRoot(rootNode);
         treeModel.reload();
 
+        // Semantic analysis
         ErrorController errorController = Parser.errorController;
+        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(tokens);
+        semanticAnalyzer.run();
 
         for (String error : errorController.getErrors()) {
             consoleOutput.append(error).append("\n");
