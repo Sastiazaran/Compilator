@@ -103,7 +103,7 @@ public class Parser {
     }
 
     private static boolean isVariable(String token) {
-        if (token.equals("int") || token.equals("float") || token.equals("string") || token.equals("Boolean"))
+        if (token.equals("int") || token.equals("float") || token.equals("string") || token.equals("boolean"))
             return true;
         return false;
     }
@@ -854,12 +854,12 @@ public class Parser {
                 currentToken++;
             } else if (tokens.get(currentToken).getWord().equals("true") && isCurrentTokenValid()) {
                 // Añadir current token al árbol
-                addNote("Boolean (" + tokens.get(currentToken).getWord() + ")", false);
+                addNote("boolean (" + tokens.get(currentToken).getWord() + ")", false);
                 SemanticAnalyzer.pushStack(TokenAnalyzer(tokens.get(currentToken).getWord()));
                 currentToken++;
             } else if (tokens.get(currentToken).getWord().equals("false") && isCurrentTokenValid()) {
                 // Añadir current token al árbol
-                addNote("Boolean (" + tokens.get(currentToken).getWord() + ")", false);
+                addNote("boolean (" + tokens.get(currentToken).getWord() + ")", false);
                 SemanticAnalyzer.pushStack(TokenAnalyzer(tokens.get(currentToken).getWord()));
                 currentToken++;
             } else if (tokens.get(currentToken).getWord().equals("(") && isCurrentTokenValid()) {
