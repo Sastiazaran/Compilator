@@ -2,8 +2,10 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Element;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
 import java.awt.*;
 import java.util.Vector;
 
@@ -51,7 +53,7 @@ class GUI extends JFrame {
 
     public GUI() {
         // Configuración de la ventana principal
-        setTitle("Lexer App");
+        setTitle("Compilator App");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -100,7 +102,7 @@ class GUI extends JFrame {
         JTextArea parserTextArea = new JTextArea(10, 30);
         parserPanel.add(new JScrollPane(parserTextArea), BorderLayout.CENTER);
 
-        // Configurar treePanel
+         // Configurar treePanel
         treePanel.setLayout(new BorderLayout());
         treePanel.add(new JLabel("Tree:"), BorderLayout.NORTH);
         rootNode = new DefaultMutableTreeNode("root");
@@ -112,7 +114,7 @@ class GUI extends JFrame {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Lexer", tablePanel);
         tabbedPane.addTab("Console", consolePanel);
-        tabbedPane.addTab("Parser", parserPanel);
+        tabbedPane.addTab("Parser", parserPanel); // Agregar la pestaña "Parser"
         tabbedPane.addTab("Tree", treePanel);
 
         // Crear el panel principal y agregar componentes
@@ -152,22 +154,19 @@ class GUI extends JFrame {
             consoleOutput.append(token.getLine()).append(" ").append(token.getToken()).append(" ").append(token.getWord()).append("\n");
         }
 
-        // Parsing
         Parser parser = new Parser(tokens);
         DefaultMutableTreeNode rootNode = parser.parse();
         treeModel.setRoot(rootNode);
         treeModel.reload();
 
-        // Semantic analysis
         ErrorController errorController = Parser.errorController;
-        SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(tokens);
-        semanticAnalyzer.run();
 
-        for (String error : errorController.getErrors()) {
-            consoleOutput.append(error).append("\n");
+        for (String error : errorController.getErrors()){
+            consoleOutput.append(error + "");
         }
 
         consoleOutput.append("----------------------------\n");
+
         consoleTextArea.append(consoleOutput.toString());
 
         // Simular procesamiento del parser (puedes reemplazar esto con la lógica real de tu parser)
@@ -177,6 +176,8 @@ class GUI extends JFrame {
             parserOutput.append("Processed token: ").append(token.getWord()).append("\n");
         }
         parserTextArea.setText(parserOutput.toString());
+
+        
     }
 
     public static void main(String[] args) {

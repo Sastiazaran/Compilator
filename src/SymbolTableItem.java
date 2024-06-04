@@ -4,9 +4,9 @@ public class SymbolTableItem {
     private String value;
 
     public SymbolTableItem(String type, String scope, String value){
-        setScope(scope);
-        setType(type);
-        setValue(value);
+        this.type = type;
+        this.scope = scope;
+        this.value = value;
     }
 
     public String getType() {
