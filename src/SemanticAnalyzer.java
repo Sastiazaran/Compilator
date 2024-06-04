@@ -38,134 +38,135 @@ public class SemanticAnalyzer {
     private static String cube[][][] = {
             // Sum 0
             {
-                { "Integer", "Float", "Error", "Error", "Error", "Error" },
-                { "Float", "Float", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "String", "Error", "Error" },
-                { "Error", "Error", "String", "String", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "float", "error", "string", "error", "error" },
+                { "float", "float", "error", "string", "error", "error" },
+                { "error", "error", "error", "string", "error", "error" },
+                { "string", "string", "string", "string", "string", "error" },
+                { "error", "error", "error", "string", "boolean", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Minus 1
+            // minus 1
             {
-                { "Integer", "Float", "Error", "Error", "Error", "Error" },
-                { "Float", "Float", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "float", "error", "error", "error", "error" },
+                { "float", "float", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Multiplication 2
+            // multiplication 2
             {
-                { "Integer", "Float", "Error", "Error", "Error", "Error" },
-                { "Float", "Float", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "float", "error", "error", "error", "error" },
+                { "float", "float", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Division 3
+            // division 3
             {
-                { "Integer", "Float", "Error", "Error", "Error", "Error" },
-                { "Float", "Float", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "float", "error", "error", "error", "error" },
+                { "float", "float", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // And 4
+            // and 4
             {
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Or 5
+            // or 5
             {
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Not 6
+            // not 6
             {
-                { "Error", "Error", "Error", "Error", "Boolean", "Error" },
+                { "error", "error", "error", "error", "boolean", "error" },
             },
-            // Minor 7
+            // minor 7
             {
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Greater 8
+            // greater 8
             {
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Equal 9
+            // equal 9
             {
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Lor Equal 10
+            // lor equal 10
             {
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Boolean", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "boolean", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Gor Equal 11
+            // gor equal 11
             {
-                { "Boolean", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Boolean", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Boolean", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "error", "error", "error", "error", "error" },
+                { "error", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "boolean", "error", "error", "error" },
+                { "error", "error", "error", "boolean", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Different 12
+            // different 12
             {
-                { "Boolean", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Boolean", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Boolean", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Boolean", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "boolean", "error", "error", "error", "error", "error" },
+                { "error", "boolean", "error", "error", "error", "error" },
+                { "error", "error", "boolean", "error", "error", "error" },
+                { "error", "error", "error", "boolean", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Reminder 13
+            // reminder 13
             {
-                { "Integer", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             },
-            // Assignment 14
+            // assignment 14
             {
-                { "Integer", "Error", "Error", "Error", "Error", "Error" },
-                { "Float", "Float", "Error", "Error", "Error", "Error" },
-                { "Char", "Error", "Char", "Error", "Error", "Error" },
-                { "Error", "Error", "String", "String", "Error", "Error" },
-                { "Boolean", "Error", "Error", "Error", "Boolean", "Error" },
-                { "Error", "Error", "Error", "Error", "Error", "Error" }
+                { "integer", "error", "error", "error", "error", "error" },
+                { "float", "float", "error", "error", "error", "error" },
+                { "error", "error", "char", "error", "error", "error" },
+                { "error", "error", "error", "string", "error", "error" },
+                { "error", "error", "error", "error", "boolean", "error" },
+                { "error", "error", "error", "error", "error", "error" }
             }
+            
             
     };
 
@@ -302,34 +303,36 @@ public class SemanticAnalyzer {
                     Dim3 = Error;
             }
         }
-        if(operator == "-")
+        if(operator.equals("-"))
             Dim1 = OP_minus;
-        else if(operator == "+")
+        else if(operator.equals("+"))
             Dim1 = OP_plus;
-        else if(operator == "*")
+        else if(operator.equals("*"))
             Dim1 = OP_Mult;
-        else if(operator == "/")
+        else if(operator.equals("/"))
             Dim1 = OP_Division;
-        else if(operator == "&")
+        else if(operator.equals("&"))
             Dim1 = OP_And;
-        else if(operator == "|")
+        else if(operator.equals("|"))
             Dim1 = OP_Or;
-        else if(operator == "!=")
+        else if(operator.equals("!"))
             Dim1 = OP_Not;
-        else if(operator == "<")
+        else if(operator.equals("<"))
             Dim1 = OP_Minor;
-        else if(operator == ">")
+        else if(operator.equals(">"))
             Dim1 = OP_Greater;
-        else if(operator == "==")
+        else if(operator.equals("=="))
             Dim1 = OP_Equal;
-        else if(operator == "<=")
+        else if(operator.equals("<="))
             Dim1 = OP_LorEqual;
-        else if(operator == ">=")
+        else if(operator.equals(">="))
             Dim1 = OP_GorEqual;
-        else if(operator == "%")
+        else if(operator.equals("%"))
             Dim1 = OP_Reminder;
+        else if(operator.equals("!="))
+            Dim1 = OP_Different;
         else if(operator.equals("=")){
-            if(type1.equals(type2) || type2.equals("float") && type1.equals("int"))
+            if(type1.equals(type1) || type1.equals("float") && type1.equals("int"))
                 result = "OK";
             return result;
         }

@@ -1,0 +1,112 @@
+{
+int x = 0;
+}
+
+{
+int x = 0;
+print(a);
+}
+
+{
+int x = a;
+}
+
+{
+boolean delpuerto = true;
+if(!delpuerto){
+int x = 0;
+}
+}
+
+{
+boolean delpuerto = true;
+int delpuerto2 = 2; 
+if(!delpuerto && delpuerto2 == 2){
+int x = 0;
+}
+}
+
+{
+int delpuerto2 = 2; 
+if(delpuerto2 == 2){
+int x = 0;
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(x != y){
+print(z);
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(x < y){
+print(z);
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(y > x){
+print(z);
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(x <= y){
+print(z);
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(x >= y){
+print(z);
+}
+}
+
+{
+int x = 2;
+int y = 3;
+int z = 4;
+if(x < y){
+print(z);
+}
+}
+
+{
+int number;
+number = "hola como estas";
+}
+
+{
+int x = "Asd";
+}
+
+==
+!=
+&& 
+<
+> 
+>=
+<=
+|
+while
+print
+
+
+
+

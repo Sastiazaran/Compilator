@@ -149,7 +149,11 @@ public class Parser {
 
     public static void RULE_BODY() {
         // Añade body al árbol
-        addNote("BODY");        
+        addNote("BODY"); 
+        
+        // for (int i = 0; i < tokens.size(); i++) {
+        //     System.out.println("num " + i + " " + tokens.get(i).getToken() + " " + tokens.get(i).getWord() );
+        // }
 
         DefaultMutableTreeNode current_level_at_tree = (DefaultMutableTreeNode) current_level.getParent();
         int currentLine = -1;
@@ -527,8 +531,10 @@ public class Parser {
         while (tokens.get(currentToken).getWord().equals("<") | tokens.get(currentToken).getWord().equals(">")
                 | tokens.get(currentToken).getWord().equals("==") | tokens.get(currentToken).getWord().equals("!=")
                 | tokens.get(currentToken).getWord().equals("<=") | tokens.get(currentToken).getWord().equals(">=")) {
+
             // Añade current token al árbol
             addNote(tokens.get(currentToken).getWord(), false);
+            operator = tokens.get(currentToken).getWord();
             currentToken++;
             RULE_E();
             String x = SemanticAnalyzer.popStack();
@@ -1038,7 +1044,7 @@ public class Parser {
                 RULE_EXPRESSION();
                 // SEMANTIC
                 String x = SemanticAnalyzer.popStack();
-                if (!x.equals("Boolean")) {
+                if (!x.equals("boolean")) {
                     SemanticAnalyzer.error(3, tokens.get(currentToken - 1).getLine(), "");
                     System.out.println("RULE WHILE ERROR");
                 }
@@ -1081,7 +1087,7 @@ public class Parser {
                 RULE_EXPRESSION();
                 // SEMANTIC
                 String x = SemanticAnalyzer.popStack();
-                if (!x.equals("Boolean")) {
+                if (!x.equals("boolean")) {
                     SemanticAnalyzer.error(3, tokens.get(currentToken).getLine(), "");
                     System.out.println("ERROR IN IF FUNC");
                 }
