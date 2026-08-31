@@ -260,11 +260,11 @@ public class GUI extends JFrame {
                     if (tokens && column == 1) {
                         String kind = String.valueOf(value);
                         color = switch (kind) {
-                            case "ERROR" -> ERROR;
-                            case "KEYWORD" -> KEYWORD;
-                            case "ID" -> IDENT;
-                            case "Integer", "Float", "String", "Octal", "Hexadecimal", "BINARY" -> LITERAL;
-                            default -> TEXT;
+                            case "ERROR" -> GUI.ERROR;
+                            case "KEYWORD" -> GUI.KEYWORD;
+                            case "ID" -> GUI.IDENT;
+                            case "Integer", "Float", "String", "Octal", "Hexadecimal", "BINARY" -> GUI.LITERAL;
+                            default -> GUI.TEXT;
                         };
                     }
                     c.setForeground(color);
