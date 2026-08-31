@@ -1,0 +1,28 @@
+# Build
+target/
+bin/
+out/
+*.class
+*.jar
+!maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# Logs
+*.log
+hs_err_pid*
+replay_pid*

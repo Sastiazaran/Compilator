@@ -1,0 +1,4 @@
+{
+int number;
+number = "hola como estas";
+}
