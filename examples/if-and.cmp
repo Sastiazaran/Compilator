@@ -1,0 +1,7 @@
+{
+boolean delpuerto = true;
+int delpuerto2 = 2;
+if (!delpuerto && delpuerto2 == 2) {
+    int x = 0;
+}
+}

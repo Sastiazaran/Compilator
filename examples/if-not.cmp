@@ -1,0 +1,6 @@
+{
+boolean delpuerto = true;
+if (!delpuerto) {
+    int x = 0;
+}
+}
